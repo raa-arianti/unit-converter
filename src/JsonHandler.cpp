@@ -1,29 +1,30 @@
 #include "JsonHandler.h"
 #include <fstream>
 
-using json = nlohmann::json;
+bool JsonHandler::load(std::string filename) {
+    filename_ = filename;
+    std::ifstream in(filename);
+    if (!in.is_open()) return false;
+    in >> data_;
+    return true;
+}
 
-JsonHandler::JsonHandler(const std::string& filepath)
-    : filepath_(filepath) {}
-
-std::vector<double> JsonHandler::readColumn(size_t index) {
-    std::ifstream in(filepath_);
-    json j;
-    in >> j;
-
-    std::vector<double> result;
-    for (const auto& item : j) {
-        result.push_back(item.at(index).get<double>());
+std::vector<std::string> JsonHandler::getColumn(std::string selector) {
+    std::vector<std::string> result;
+    for (const auto& val : data_[selector]) {
+        result.push_back(val.get<std::string>());
     }
     return result;
 }
 
-void JsonHandler::writeColumn(const std::vector<double>& data) {
-    json j = json::array();
-    for (double v : data) {
-        j.push_back(v);
-    }
+void JsonHandler::appendColumn(std::string header,
+                               std::vector<std::string> data) {
+    data_[header] = data;
+}
 
-    std::ofstream out(filepath_);
-    out << j.dump(2);
+bool JsonHandler::save(std::string filename) {
+    std::ofstream out(filename);
+    if (!out.is_open()) return false;
+    out << data_.dump(2);
+    return true;
 }
