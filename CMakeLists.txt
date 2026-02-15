@@ -7,8 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(include)
 
-file(GLOB SOURCES
-    src/*.cpp
+add_executable(unitconverter
+    src/main.cpp
+    src/CsvHandler.cpp
+    src/JsonHandler.cpp
+    src/Length.cpp
 )
-
-add_executable(unitconverter ${SOURCES})
