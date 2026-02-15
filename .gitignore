@@ -1,0 +1,13 @@
+# Compiled object files
+*.o
+
+# Executables
+unitconverter
+*.exe
+
+# Build directories
+build/
+cmake-build-*/
+
+# OS / editor junk
+.DS_Store
